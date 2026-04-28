@@ -1,45 +1,33 @@
 /**
  * Aung Ching Prue Marma - Portfolio Script
- * Handles typewriter effect, experience calculation, online status, animations, and dark/light mode
+ * Handles dark mode, experience calculation, typewriter, clock, and interactions
  */
 
 // ========================================
-// THEME MANAGEMENT (Dark/Light Mode)
+// DARK MODE
 // ========================================
-function initTheme() {
+function initDarkMode() {
     const themeToggle = document.getElementById('themeToggle');
     const savedTheme = localStorage.getItem('theme');
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const isDark = savedTheme === 'dark' || (!savedTheme && prefersDark);
     
-    // Check for saved theme preference or system preference
-    if (savedTheme === 'dark') {
-        document.body.classList.add('dark-theme');
-        if (themeToggle) {
-            themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
-        }
-    } else if (savedTheme === 'light') {
-        document.body.classList.remove('dark-theme');
-        if (themeToggle) {
-            themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
-        }
+    if (isDark) {
+        document.documentElement.classList.add('dark');
+        if (themeToggle) themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
     } else {
-        // Check system preference
-        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-        if (prefersDark) {
-            document.body.classList.add('dark-theme');
-            if (themeToggle) {
-                themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
-            }
-        }
+        document.documentElement.classList.remove('dark');
+        if (themeToggle) themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
     }
     
     if (themeToggle) {
-        themeToggle.addEventListener('click', () => {
-            if (document.body.classList.contains('dark-theme')) {
-                document.body.classList.remove('dark-theme');
+        themeToggle.addEventListener('click', function() {
+            if (document.documentElement.classList.contains('dark')) {
+                document.documentElement.classList.remove('dark');
                 localStorage.setItem('theme', 'light');
                 themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
             } else {
-                document.body.classList.add('dark-theme');
+                document.documentElement.classList.add('dark');
                 localStorage.setItem('theme', 'dark');
                 themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
             }
@@ -48,13 +36,50 @@ function initTheme() {
 }
 
 // ========================================
-// EXPERIENCE CALCULATION (Auto-updating)
+// NAVBAR SCROLL EFFECT
 // ========================================
-const link3Start = new Date(2024, 6, 1);      // July 1, 2024
-const link3End = new Date(2025, 11, 31);      // December 31, 2025
-const bluenetStart = new Date(2025, 11, 13);  // December 13, 2025
+function initNavbarScroll() {
+    const navbar = document.querySelector('.navbar');
+    if (navbar) {
+        window.addEventListener('scroll', function() {
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+    }
+}
 
-function formatDuration(startDate, endDate = null) {
+// ========================================
+// BACK TO TOP BUTTON
+// ========================================
+function initBackToTop() {
+    const backToTopBtn = document.getElementById('backToTop');
+    
+    if (backToTopBtn) {
+        window.addEventListener('scroll', function() {
+            if (window.scrollY > 300) {
+                backToTopBtn.classList.add('show');
+            } else {
+                backToTopBtn.classList.remove('show');
+            }
+        });
+        
+        backToTopBtn.addEventListener('click', function() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+    }
+}
+
+// ========================================
+// EXPERIENCE CALCULATION
+// ========================================
+const link3Start = new Date(2024, 6, 1);
+const link3End = new Date(2025, 11, 31);
+const bluenetStart = new Date(2025, 11, 13);
+
+function formatDuration(startDate, endDate) {
     const end = endDate || new Date();
     let years = end.getFullYear() - startDate.getFullYear();
     let months = end.getMonth() - startDate.getMonth();
@@ -62,8 +87,7 @@ function formatDuration(startDate, endDate = null) {
     
     if (days < 0) {
         months--;
-        const prevMonth = new Date(end.getFullYear(), end.getMonth(), 0);
-        days += prevMonth.getDate();
+        days += new Date(end.getFullYear(), end.getMonth(), 0).getDate();
     }
     if (months < 0) {
         years--;
@@ -71,28 +95,19 @@ function formatDuration(startDate, endDate = null) {
     }
     
     const parts = [];
-    if (years > 0) parts.push(`${years} Year${years > 1 ? 's' : ''}`);
-    if (months > 0) parts.push(`${months} Month${months > 1 ? 's' : ''}`);
-    if (days > 0 && years === 0 && months === 0) parts.push(`${days} Day${days > 1 ? 's' : ''}`);
+    if (years > 0) parts.push(years + " Year" + (years > 1 ? 's' : ''));
+    if (months > 0) parts.push(months + " Month" + (months > 1 ? 's' : ''));
+    if (days > 0 && years === 0 && months === 0) parts.push(days + " Day" + (days > 1 ? 's' : ''));
     
-    return parts.join(' ') || 'Less than a month';
+    return parts.length ? parts.join(' ') : 'Less than a month';
 }
 
 function calculateTotalExperience() {
     const now = new Date();
-    let totalMonths = 0;
+    let totalMonths = (link3End.getFullYear() - link3Start.getFullYear()) * 12 + (link3End.getMonth() - link3Start.getMonth()) + 1;
+    let bluenetMonths = (now.getFullYear() - bluenetStart.getFullYear()) * 12 + (now.getMonth() - bluenetStart.getMonth());
     
-    // Link3 duration (fixed: July 1, 2024 to Dec 31, 2025)
-    const link3Months = (link3End.getFullYear() - link3Start.getFullYear()) * 12 + 
-                        (link3End.getMonth() - link3Start.getMonth()) + 1;
-    totalMonths += link3Months;
-    
-    // Bluenet duration (ongoing: Dec 13, 2025 to present)
-    let bluenetMonths = (now.getFullYear() - bluenetStart.getFullYear()) * 12 + 
-                        (now.getMonth() - bluenetStart.getMonth());
-    
-    const bluenetDayDiff = now.getDate() - bluenetStart.getDate();
-    if (bluenetDayDiff < 0 && bluenetMonths > 0) {
+    if (now.getDate() < bluenetStart.getDate() && bluenetMonths > 0) {
         bluenetMonths--;
     }
     if (bluenetMonths < 0) bluenetMonths = 0;
@@ -103,71 +118,55 @@ function calculateTotalExperience() {
     const months = totalMonths % 12;
     
     if (years > 0 && months > 0) {
-        return `${years} Year${years > 1 ? 's' : ''} ${months} Month${months > 1 ? 's' : ''}`;
+        return years + " Year" + (years > 1 ? 's' : '') + " " + months + " Month" + (months > 1 ? 's' : '');
     }
     if (years > 0) {
-        return `${years} Year${years > 1 ? 's' : ''}`;
+        return years + " Year" + (years > 1 ? 's' : '');
     }
-    if (months > 0) {
-        return `${months} Month${months > 1 ? 's' : ''}`;
-    }
-    return 'Less than a month';
+    return months + " Month" + (months > 1 ? 's' : '');
 }
 
 function updateAllDurations() {
-    const link3DurationElem = document.getElementById('link3Duration');
-    if (link3DurationElem) {
-        link3DurationElem.innerHTML = `⏱️ Duration: ${formatDuration(link3Start, link3End)}`;
-    }
+    const link3Elem = document.getElementById('link3Duration');
+    const bluenetElem = document.getElementById('bluenetDuration');
+    const totalExpElem = document.getElementById('totalExpDisplay');
+    const expTextElem = document.getElementById('expText');
+    const expYearsElem = document.getElementById('expYears');
     
-    const bluenetDurationElem = document.getElementById('bluenetDuration');
-    if (bluenetDurationElem) {
-        bluenetDurationElem.innerHTML = `⏱️ Duration: ${formatDuration(bluenetStart)} (Ongoing)`;
-    }
+    if (link3Elem) link3Elem.innerHTML = '⏱️ Duration: ' + formatDuration(link3Start, link3End);
+    if (bluenetElem) bluenetElem.innerHTML = '⏱️ Duration: ' + formatDuration(bluenetStart) + ' (Ongoing)';
     
     const totalExp = calculateTotalExperience();
-    
-    const totalExpDisplay = document.getElementById('totalExpDisplay');
-    const expTextSpan = document.getElementById('expText');
-    const expYearsSpan = document.getElementById('expYears');
-    
-    if (totalExpDisplay) totalExpDisplay.textContent = totalExp;
-    if (expTextSpan) expTextSpan.innerHTML = `🎯 ${totalExp} Experience`;
-    if (expYearsSpan) expYearsSpan.textContent = totalExp;
+    if (totalExpElem) totalExpElem.textContent = totalExp;
+    if (expTextElem) expTextElem.innerHTML = '🎯 ' + totalExp + ' Experience';
+    if (expYearsElem) expYearsElem.textContent = totalExp;
 }
 
 // ========================================
 // TYPEWRITER EFFECT
 // ========================================
-const phrases = [
-    "Technical Support Specialist",
-    "Customer Success Professional", 
-    "Live Chat Expert",
-    "ISP Support Specialist"
-];
-
-let phraseIndex = 0, charIndex = 0, isDeleting = false;
-const typewriterElement = document.getElementById('typewriter-text');
+const phrases = ["Technical Support Specialist", "Customer Success Professional", "Live Chat Expert", "ISP Support Specialist"];
+let phraseIdx = 0, charIdx = 0, isDeleting = false;
+const typeEl = document.getElementById('typewriter-text');
 
 function typeEffect() {
-    if (!typewriterElement) return;
-    
-    const currentPhrase = phrases[phraseIndex];
+    if (!typeEl) return;
+    const current = phrases[phraseIdx];
     
     if (isDeleting) {
-        typewriterElement.textContent = currentPhrase.substring(0, charIndex - 1);
-        charIndex--;
-        if (charIndex === 0) {
+        typeEl.textContent = current.substring(0, charIdx - 1);
+        charIdx--;
+        if (charIdx === 0) {
             isDeleting = false;
-            phraseIndex = (phraseIndex + 1) % phrases.length;
+            phraseIdx = (phraseIdx + 1) % phrases.length;
             setTimeout(typeEffect, 300);
             return;
         }
         setTimeout(typeEffect, 50);
     } else {
-        typewriterElement.textContent = currentPhrase.substring(0, charIndex + 1);
-        charIndex++;
-        if (charIndex === currentPhrase.length) {
+        typeEl.textContent = current.substring(0, charIdx + 1);
+        charIdx++;
+        if (charIdx === current.length) {
             isDeleting = true;
             setTimeout(typeEffect, 2000);
             return;
@@ -177,117 +176,110 @@ function typeEffect() {
 }
 
 // ========================================
-// ONLINE AVAILABILITY (Bangladesh Time)
+// ONLINE AVAILABILITY
 // ========================================
 function updateAvailability() {
     const now = new Date();
-    const bangladeshTime = new Date(now.getTime() + (6 * 60 * 60 * 1000));
-    const day = bangladeshTime.getUTCDay();
-    const hours = bangladeshTime.getUTCHours();
-    const minutes = bangladeshTime.getUTCMinutes();
-    const currentTimeInMinutes = hours * 60 + minutes;
+    const bdTime = new Date(now.getTime() + (6 * 60 * 60 * 1000));
+    const day = bdTime.getUTCDay();
+    const hours = bdTime.getUTCHours();
+    const mins = bdTime.getUTCMinutes();
+    const current = hours * 60 + mins;
     
     let isOnline = false;
-    let timeRangeText = "";
+    let rangeText = "";
     
     if (day >= 0 && day <= 4) {
-        const startTime = 9 * 60;
-        const endTime = 21 * 60;
-        isOnline = (currentTimeInMinutes >= startTime && currentTimeInMinutes <= endTime);
-        timeRangeText = "Sun-Thu, 9AM-9PM (BST)";
+        isOnline = (current >= 540 && current <= 1260);
+        rangeText = "Sun-Thu, 9AM-9PM (BST)";
     } else if (day === 5) {
-        const startTime = 9 * 60;
-        const endTime = 14 * 60;
-        isOnline = (currentTimeInMinutes >= startTime && currentTimeInMinutes <= endTime);
-        timeRangeText = "Friday, 9AM-2PM (BST)";
-    } else if (day === 6) {
+        isOnline = (current >= 540 && current <= 840);
+        rangeText = "Friday, 9AM-2PM (BST)";
+    } else {
         isOnline = false;
-        timeRangeText = "Saturday (Closed)";
+        rangeText = "Saturday (Closed)";
     }
     
-    const statusDot = document.getElementById('statusDot');
-    const statusText = document.getElementById('statusText');
-    const timeRangeSpan = document.getElementById('timeRange');
+    const dot = document.getElementById('statusDot');
+    const status = document.getElementById('statusText');
+    const rangeSpan = document.getElementById('timeRange');
     
-    if (statusDot && statusText && timeRangeSpan) {
+    if (dot && status) {
         if (isOnline) {
-            statusDot.style.background = "#22c55e";
-            statusText.textContent = "Online Now";
-            statusText.className = "online-text";
-            statusDot.style.animation = "pulseOnline 1.5s infinite";
+            dot.style.background = "#22c55e";
+            status.textContent = "Online Now";
         } else {
-            statusDot.style.background = "#ef4444";
-            statusText.textContent = "Offline";
-            statusText.className = "offline-text";
-            statusDot.style.animation = "none";
+            dot.style.background = "#ef4444";
+            status.textContent = "Offline";
         }
-        timeRangeSpan.textContent = timeRangeText;
     }
+    if (rangeSpan) rangeSpan.textContent = rangeText;
 }
 
 // ========================================
-// BANGLADESH TIME CLOCK (12-hour format)
+// BANGLADESH TIME CLOCK
 // ========================================
-function updateBangladeshTime() {
+function updateClock() {
     const now = new Date();
-    const bangladeshTime = new Date(now.getTime() + (6 * 60 * 60 * 1000));
-    
-    let hours = bangladeshTime.getUTCHours();
-    const minutes = bangladeshTime.getUTCMinutes();
-    const seconds = bangladeshTime.getUTCSeconds();
+    const bd = new Date(now.getTime() + (6 * 60 * 60 * 1000));
+    let hours = bd.getUTCHours();
+    const mins = bd.getUTCMinutes().toString().padStart(2, '0');
+    const secs = bd.getUTCSeconds().toString().padStart(2, '0');
     const ampm = hours >= 12 ? 'PM' : 'AM';
+    hours = hours % 12 || 12;
     
-    hours = hours % 12;
-    hours = hours ? hours : 12;
-    
-    const formattedMinutes = minutes.toString().padStart(2, '0');
-    const formattedSeconds = seconds.toString().padStart(2, '0');
-    const timeString = `${hours}:${formattedMinutes}:${formattedSeconds} ${ampm}`;
+    const timeElem = document.getElementById('bdTime');
+    if (timeElem) timeElem.textContent = hours + ':' + mins + ':' + secs + ' ' + ampm;
     
     const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
     const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-    
-    const dayName = days[bangladeshTime.getUTCDay()];
-    const date = bangladeshTime.getUTCDate();
-    const month = months[bangladeshTime.getUTCMonth()];
-    const year = bangladeshTime.getUTCFullYear();
-    const dateString = `${dayName}, ${date} ${month} ${year}`;
-    
-    const timeElement = document.getElementById('bdTime');
-    const dateElement = document.getElementById('bdDate');
-    
-    if (timeElement) timeElement.textContent = timeString;
-    if (dateElement) dateElement.textContent = dateString;
+    const dateElem = document.getElementById('bdDate');
+    if (dateElem) {
+        dateElem.textContent = days[bd.getUTCDay()] + ', ' + bd.getUTCDate() + ' ' + months[bd.getUTCMonth()] + ' ' + bd.getUTCFullYear();
+    }
 }
 
 // ========================================
-// SPOTLIGHT EFFECT FOR PROFILE IMAGE
+// SPOTLIGHT EFFECT
 // ========================================
-function initSpotlightEffect() {
-    const imageWrapper = document.querySelector('.image-wrapper');
-    const spotlight = document.querySelector('.spotlight');
+function initSpotlight() {
+    const wrapper = document.querySelector('.image-wrapper');
+    const spot = document.querySelector('.spotlight');
     
-    if (imageWrapper && spotlight) {
-        imageWrapper.addEventListener('mousemove', (e) => {
-            const rect = imageWrapper.getBoundingClientRect();
+    if (wrapper && spot) {
+        wrapper.addEventListener('mousemove', function(e) {
+            const rect = wrapper.getBoundingClientRect();
             const x = ((e.clientX - rect.left) / rect.width) * 100;
             const y = ((e.clientY - rect.top) / rect.height) * 100;
-            spotlight.style.setProperty('--x', x + '%');
-            spotlight.style.setProperty('--y', y + '%');
+            spot.style.setProperty('--x', x + '%');
+            spot.style.setProperty('--y', y + '%');
         });
     }
 }
 
 // ========================================
-// SMOOTH SCROLL FOR ANCHOR LINKS
+// CLICKABLE LOGO
+// ========================================
+function initLogo() {
+    const logo = document.getElementById('logoClickable');
+    if (logo) {
+        logo.addEventListener('click', function() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+    }
+}
+
+// ========================================
+// SMOOTH SCROLL FOR ANCHORS
 // ========================================
 function initSmoothScroll() {
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    const anchors = document.querySelectorAll('a[href^="#"]');
+    anchors.forEach(function(anchor) {
         anchor.addEventListener('click', function(e) {
-            const targetId = this.getAttribute('href');
-            if (targetId === "#" || targetId === "#contact") {
+            const href = this.getAttribute('href');
+            if (href === "#" || href === "#contact" || href === "#skills" || href === "#experience") {
                 e.preventDefault();
-                const target = document.querySelector('#contact');
+                const target = document.querySelector(href);
                 if (target) {
                     target.scrollIntoView({ behavior: 'smooth', block: 'start' });
                 }
@@ -297,18 +289,21 @@ function initSmoothScroll() {
 }
 
 // ========================================
-// INITIALIZE ALL WHEN DOM IS READY
+// INITIALIZE EVERYTHING
 // ========================================
-document.addEventListener('DOMContentLoaded', () => {
-    initTheme();
+document.addEventListener('DOMContentLoaded', function() {
+    initDarkMode();
+    initNavbarScroll();
+    initBackToTop();
     updateAllDurations();
     updateAvailability();
     typeEffect();
-    initSpotlightEffect();
+    updateClock();
+    initSpotlight();
+    initLogo();
     initSmoothScroll();
-    updateBangladeshTime();
     
-    setInterval(updateBangladeshTime, 1000);
+    setInterval(updateClock, 1000);
     setInterval(updateAvailability, 60000);
     setInterval(updateAllDurations, 86400000);
     
