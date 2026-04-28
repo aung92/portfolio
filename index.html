@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Aung Ching Prue Marma | Technical Support Specialist</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+    <!-- Flat Icon CDN -->
+    <link rel="stylesheet" href="https://cdn-uicons.flaticon.com/uicons-regular-rounded/css/uicons-regular-rounded.css">
+    <link rel="stylesheet" href="https://cdn-uicons.flaticon.com/uicons-solid-rounded/css/uicons-solid-rounded.css">
+    <link rel="stylesheet" href="https://cdn-uicons.flaticon.com/uicons-brands/css/uicons-brands.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container nav-flex">
+            <div class="logo">AUNG<span>CHING</span></div>
+            <ul class="nav-links">
+                <li><a href="#experience">Experience</a></li>
+                <li><a href="#skills">Skills</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+            <div class="nav-right">
+                <!-- Bangladesh Time & Date Display -->
+                <div class="datetime-display" id="datetimeDisplay">
+                    <i class="fi fi-rr-clock"></i>
+                    <span class="time" id="bdTime">--:-- --</span>
+                    <span class="date" id="bdDate">-- --- ----</span>
+                </div>
+                <!-- Dark/Light Mode Toggle Button -->
+                <button id="themeToggle" class="theme-toggle" aria-label="Toggle Dark/Light Mode">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <a href="assets/AUNG%20CHING%20PRUE%20MARMA%20CV.pdf" download="AUNG_CHING_PRUE_MARMA_CV.pdf" class="btn-download-nav">
+                    <i class="fi fi-rr-download"></i> Download CV
+                </a>
+                <a href="#contact" class="btn-outline-nav">Hire Me</a>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <!-- Hero Section -->
+        <div class="container">
+            <div class="hero">
+                <div class="hero-left">
+                    <div class="badge-group">
+                        <div class="badge">
+                            <i class="fi fi-sr-bolt"></i> AVAILABLE FOR HIRE
+                        </div>
+                        <div class="online-badge" id="onlineBadge">
+                            <span class="online-dot" id="statusDot"></span>
+                            <span id="statusText" class="online-text">Checking...</span>
+                            <span id="timeRange" class="time-info"></span>
+                        </div>
+                    </div>
+                    
+                    <h1>I'm <span>Aung Ching<br>Prue Marma</span></h1>
+                    
+                    <div class="exp-highlight" id="expBadge">
+                        <i class="fi fi-rr-briefcase"></i>
+                        <span id="expText">Loading experience...</span>
+                    </div>
+                    
+                    <div class="animated-subtitle">
+                        <span class="typewriter-text" id="typewriter-text"></span>
+                        <span class="typewriter-cursor"></span>
+                    </div>
+                    
+                    <p class="hero-desc">Customer-focused professional with <strong id="expYears">--</strong> of experience. Specialist in Technical Support & Customer Success delivering exceptional results across ISP and e-commerce platforms.</p>
+                    
+                    <div class="cta-group">
+                        <a href="#contact" class="btn-primary">
+                            <i class="fi fi-rr-briefcase"></i> Hire Me Now
+                        </a>
+                        <a href="assets/AUNG%20CHING%20PRUE%20MARMA%20CV.pdf" download="AUNG_CHING_PRUE_MARMA_CV.pdf" class="btn-download">
+                            <i class="fi fi-rr-download"></i> Download CV
+                        </a>
+                        <a href="https://wa.me/8801918481232" target="_blank" class="btn-outline">
+                            <i class="fi fi-brands-whatsapp"></i> WhatsApp Chat
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="hero-right">
+                    <div class="animated-glow"></div>
+                    <div class="glow-ring"></div>
+                    <div class="floating-dots">
+                        <div class="dot dot-1"></div>
+                        <div class="dot dot-2"></div>
+                        <div class="dot dot-3"></div>
+                        <div class="dot dot-4"></div>
+                        <div class="dot dot-5"></div>
+                    </div>
+                    <div class="image-container">
+                        <div class="image-wrapper" id="profileImage">
+                            <div class="spotlight" id="spotlight"></div>
+                            <img src="images/acp.jpg" alt="Aung Ching Prue Marma">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Skills Section -->
+        <section id="skills" class="section">
+            <div class="container">
+                <h2 class="section-title">Skills</h2>
+                <div class="skills-grid">
+                    <span class="skill-tag"><i class="fi fi-rr-headset"></i> Technical Support</span>
+                    <span class="skill-tag"><i class="fi fi-rr-comment-dots"></i> Live Chat Support</span>
+                    <span class="skill-tag"><i class="fi fi-rr-shopping-cart"></i> E-commerce Support</span>
+                    <span class="skill-tag"><i class="fi fi-rr-wifi"></i> ISP Troubleshooting</span>
+                    <span class="skill-tag"><i class="fi fi-rr-ticket"></i> CRM & Ticketing</span>
+                    <span class="skill-tag"><i class="fi fi-rr-users"></i> Client Management</span>
+                    <span class="skill-tag"><i class="fi fi-rr-chart-line"></i> SLA Compliance</span>
+                    <span class="skill-tag"><i class="fi fi-rr-user-experience"></i> Customer Success</span>
+                    <span class="skill-tag"><i class="fi fi-rr-document"></i> Technical Documentation</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Experience Section -->
+        <section id="experience" class="section">
+            <div class="container">
+                <h2 class="section-title">Experience</h2>
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-date" id="currentJobDate">Dec 2025 – Present</div>
+                        <div class="timeline-content">
+                            <h3>Support Executive</h3>
+                            <p>Bluenet Communication JV Ltd. — Handle 500+ live chat conversations monthly, resolve technical ISP issues, maintain 98% CSAT.</p>
+                            <div class="company-duration" id="bluenetDuration">⏱️ Duration: Calculating...</div>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-date">July 2024 – Dec 2025</div>
+                        <div class="timeline-content">
+                            <h3>Customer Service Representative</h3>
+                            <p>Digicon Technologies (Link3) — Managed <strong>20,000+ Live Chat & Messages</strong> + email tickets, reduced resolution time by 28%, created canned response library.</p>
+                            <div class="company-duration" id="link3Duration">⏱️ Duration: Calculating...</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="highlight-stat">
+                    <p>
+                        <i class="fi fi-rr-comment-dots" style="font-size: 1.2rem;"></i>
+                        <strong>🏆 20,000+ Live Chat & Messages</strong> successfully handled at Link3
+                    </p>
+                </div>
+                
+                <div class="total-exp-box">
+                    <p class="total-exp-text">
+                        <i class="fi fi-rr-calendar"></i> Total Experience: <span id="totalExpDisplay">--</span>
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="container">
+            <div class="contact-section">
+                <h2>Let's work together</h2>
+                <p>Available for full-time, contract, or freelance opportunities.</p>
+                <a href="mailto:aungching.jack420@gmail.com" class="contact-email">
+                    <i class="fi fi-rr-envelope"></i> aungching.jack420@gmail.com
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>© 2026 Aung Ching Prue Marma — 20,000+ Live Chat & Messages at Link3 | Available for hire</p>
+        </div>
+    </footer>
+
+    <!-- Font Awesome for theme toggle icon (fallback) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Custom JS -->
+    <script src="js/script.js"></script>
+</body>
+</html>
