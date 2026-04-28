@@ -19,8 +19,12 @@
     --online: #22c55e;
     --offline: #ef4444;
     --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.02);
-    --navbar-bg: rgba(255, 255, 255, 0.85);
+    --navbar-bg: rgba(255, 255, 255, 0.7);
+    --navbar-bg-scrolled: rgba(255, 255, 255, 0.85);
     --navbar-border: rgba(0, 0, 0, 0.05);
+    --navbar-border-scrolled: rgba(255, 255, 255, 0.2);
+    --navbar-blur: blur(10px);
+    --navbar-blur-scrolled: blur(20px);
     --heading-color: #111827;
     --desc-color: #4b5563;
     --badge-bg: rgba(37, 99, 235, 0.1);
@@ -62,8 +66,12 @@ html.dark {
     --card-bg: #1e293b;
     --tag-bg: #1e293b;
     --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3), 0 8px 10px -6px rgba(0, 0, 0, 0.2);
-    --navbar-bg: rgba(15, 23, 42, 0.85);
+    --navbar-bg: rgba(15, 23, 42, 0.6);
+    --navbar-bg-scrolled: rgba(15, 23, 42, 0.85);
     --navbar-border: rgba(255, 255, 255, 0.05);
+    --navbar-border-scrolled: rgba(255, 255, 255, 0.15);
+    --navbar-blur: blur(10px);
+    --navbar-blur-scrolled: blur(20px);
     --heading-color: #ffffff;
     --desc-color: #e2e8f0;
     --badge-bg: rgba(59, 130, 246, 0.2);
@@ -282,27 +290,44 @@ html.dark .back-to-top-btn:hover {
 }
 
 /* ========================================
-   NAVIGATION
+   NAVIGATION - FULL GLASS LOOK ON SCROLL
 ======================================== */
 .navbar {
     position: sticky;
     top: 0;
     z-index: 50;
     background: var(--navbar-bg);
-    backdrop-filter: blur(12px);
+    backdrop-filter: var(--navbar-blur);
+    -webkit-backdrop-filter: var(--navbar-blur);
     border-bottom: 1px solid var(--navbar-border);
     padding: 16px 0;
-    transition: all 0.3s ease;
+    transition: all 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1);
 }
 
+/* Scrolled state - Full Glassmorphism */
 .navbar.scrolled {
-    background: var(--navbar-bg);
-    backdrop-filter: blur(16px);
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    background: var(--navbar-bg-scrolled);
+    backdrop-filter: var(--navbar-blur-scrolled);
+    -webkit-backdrop-filter: var(--navbar-blur-scrolled);
+    border-bottom: 1px solid var(--navbar-border-scrolled);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+    padding: 12px 0;
 }
 
+/* Light mode scrolled effect */
+html:not(.dark) .navbar.scrolled {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05);
+}
+
+/* Dark mode scrolled effect */
 html.dark .navbar.scrolled {
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    background: rgba(15, 23, 42, 0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
 }
 
 .nav-flex {
@@ -883,12 +908,12 @@ html.dark .dot {
         padding: 8px 20px;
         font-size: 0.85rem;
     }
-    .skill-tag-1 { top: -40px; left: 50%; transform: translateX(-50%); }
-    .skill-tag-2 {top: 5%;right: -10px;}
-    .skill-tag-3 {bottom: 5%;right: -50px;}
-    .skill-tag-4 { bottom: -40px; left: 50%; transform: translateX(-50%); }
-    .skill-tag-5 { top: 38%; left: -100px; }
-    .skill-tag-6 { bottom: 38%; left: -100px; }
+    .skill-tag-1 {top: -10px;left: 40%;transform: translateX(-50%);}
+    .skill-tag-2 {top: 12%;right: -45px;}
+    .skill-tag-3 {bottom: 12%;right: -45px;}
+    .skill-tag-4 {bottom: -20px;left: 50%;transform: translateX(-50%);}
+    .skill-tag-5 {top: 30%;left: -100px;}
+    .skill-tag-6 {bottom: 20%;left: -60px;}
 }
 
 /* Large Desktop (992px - 1199px) */
@@ -934,12 +959,12 @@ html.dark .dot {
         font-size: 0.75rem;
         gap: 6px;
     }
-    .skill-tag-1 {top: 0px;left: 30%;transform: translateX(-50%);}
-    .skill-tag-2 {top: 10%;right: -40px;}
-    .skill-tag-3 {bottom: 3%;right: -30px;}
-    .skill-tag-4 {bottom: -32px;left: 30%;transform: translateX(-50%);}
+    .skill-tag-1 {top: -10px;left: 50%;transform: translateX(-50%);}
+    .skill-tag-2 {top: 14%;right: -75px;}
+    .skill-tag-3 {bottom: 7%;right: -50px;}
+    .skill-tag-4 {bottom: -30px;left: 30%;transform: translateX(-50%);}
     .skill-tag-5 { top: 36%; left: -75px; }
-    .skill-tag-6 {bottom: 25%;left: -75px;}
+    .skill-tag-6 {bottom: 26%;left: -75px;}
 }
 
 /* Small Tablet / Large Phone (576px - 767px) */
@@ -960,7 +985,6 @@ html.dark .dot {
         font-size: 0.7rem;
         gap: 5px;
     }
-    /* Reposition tags for smaller screens */
     .skill-tag-1 { top: -28px; left: 50%; transform: translateX(-50%); }
     .skill-tag-2 { top: -10px; right: -60px; }
     .skill-tag-3 { bottom: -10px; right: -60px; }
@@ -1013,13 +1037,12 @@ html.dark .dot {
         font-size: 0.55rem;
         gap: 3px;
     }
-    /* Compact positioning for small screens */
     .skill-tag-1 { top: -20px; left: 50%; transform: translateX(-50%); }
-    .skill-tag-2 {top: 20px;right: -10px;}
-    .skill-tag-3 {bottom: 32px;right: -10px;}
-    .skill-tag-4 {bottom: -20px;left: 40%;transform: translateX(-50%);}
-    .skill-tag-5 {top: 32%;left: 0px;}
-    .skill-tag-6 {bottom: 32%;left: 10px;}
+    .skill-tag-2 { top: -12px; right: -40px; }
+    .skill-tag-3 { bottom: -12px; right: -40px; }
+    .skill-tag-4 { bottom: -20px; left: 50%; transform: translateX(-50%); }
+    .skill-tag-5 { top: 32%; left: -40px; }
+    .skill-tag-6 { bottom: 32%; left: -40px; }
 }
 
 /* Ultra Small Mobile (below 380px) */
